@@ -37,6 +37,21 @@ sudo apt install nginx -y
 sudo systemctl start nginx
 sudo systemctl enable nginx
 
+# Set up SSH keys for GitHub
+SSH_KEY_FILE="$HOME/.ssh/github_ssh_key"
+if [ ! -f "$SSH_KEY_FILE" ]; then
+  echo "Setting up SSH keys for GitHub..."
+  ssh-keygen -t ed25519 -C "6290.2020@students.ku.ac.ke" -f "$SSH_KEY_FILE" -N ""
+  eval "$(ssh-agent -s)"
+  ssh-add "$SSH_KEY_FILE"
+else
+  echo "SSH key already exists at $SSH_KEY_FILE."
+fi
+
+# Print the public key for GitHub setup
+echo "Public key for GitHub setup:"
+cat "$SSH_KEY_FILE.pub"
+
 # Print versions to verify installation
 echo "Node.js version: $(node -v)"
 echo "NPM version: $(npm -v)"
